@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { Link } from 'react-router-dom';
@@ -7,8 +7,12 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { Spinner } from 'react-bootstrap';
 import { addTaskApi, getPendingTasksApi, deleteTaskApi } from '../Services/AllApi';
+import { highlengthContext, lowlengthContext, mediumlengthContext } from '../contexts/contextShare';
 
 const Dash = () => {
+  const [lowLength,setlowLength]=useContext(lowlengthContext)
+  const[highLength, setHighLength]=useContext(highlengthContext)
+  const[meduimLength,setMediumLength]=useContext(mediumlengthContext)
   const [open, setOpen] = useState(false);
   const [showtask, setShowtask] = useState(false);
   const [taskToShow, setTaskToShow] = useState(null); // To hold task data for modal
@@ -155,7 +159,7 @@ const Dash = () => {
               <i className='fa-solid fa-ranking-star text-dark'></i>
             </div>
             <div className='text-dark text-center fs-3 fw-bold'>High Priority</div>
-            <div className='text-dark text-center fs-5 fw-bold'>3 Tasks</div>
+            <div className='text-dark text-center fs-5 fw-bold'>{highLength} Tasks</div>
           </Link>
           <div className='ms-2'>
             <div
@@ -167,7 +171,7 @@ const Dash = () => {
                   <i className='fa-solid fa-ranking-star text-dark'></i>
                 </div>
                 <div className='text-dark text-center f4-3 fw-bold'>Medium Priority</div>
-                <div className='text-dark text-center fw-bold'>3 Tasks</div>
+                <div className='text-dark text-center fw-bold'>{meduimLength} Tasks</div>
               </Link>
             </div>
             <div
@@ -179,7 +183,7 @@ const Dash = () => {
                   <i className='fa-solid fa-ranking-star text-dark'></i>
                 </div>
                 <div className='text-dark text-center f4-3 fw-bold'>Low Priority</div>
-                <div className='text-dark text-center fw-bold'>3 Tasks</div>
+                <div className='text-dark text-center fw-bold'>{lowLength} Tasks</div>
               </Link>
             </div>
           </div>
@@ -315,9 +319,7 @@ const Dash = () => {
           <Button variant='secondary' onClick={() => handleDeleteTask(taskToShow?._id)}>
             <i className='fa-solid fa-trash text-danger'></i>
           </Button>
-          <Button variant='secondary'>
-            <i className='fa-solid fa-pen-to-square text-success'></i>
-          </Button>
+          
         </Modal.Footer>
       </Modal>
       <Footer />

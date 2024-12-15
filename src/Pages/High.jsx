@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { Spinner, Button, Modal } from 'react-bootstrap';
 import { getHighPrioriTaskApi, deleteTaskApi, EditTaskApi } from '../Services/AllApi';
+import { highlengthContext } from '../contexts/contextShare';
 
 const High = () => {
+  const [highLength, setHighLength]=useContext(highlengthContext)
   const [highTasks, setHighTasks] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null); // For task details
   const [showEditModal, setShowEditModal] = useState(false); // For edit modal
   const [editForm, setEditForm] = useState({ title: '', description: '', date: '', priority: '' });
+  console.log(highLength);
+  
 
   useEffect(() => {
     fetchHighTasks();
@@ -27,12 +31,14 @@ const High = () => {
       const result = await getHighPrioriTaskApi(reqHeader);
       if (result.status === 200) {
         setHighTasks(result.data.reverse());
+        setHighLength(result.data.length)
       }
     } catch (err) {
       console.error(err);
       alert('Error occurred while fetching tasks');
     }
   };
+  
 
   const handleDeleteTask = async (id) => {
     const token = sessionStorage.getItem('token');

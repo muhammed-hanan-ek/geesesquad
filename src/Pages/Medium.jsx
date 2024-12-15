@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { Spinner, Modal, Button } from 'react-bootstrap';
 import { getMediumPrioriTaskApi, deleteTaskApi, EditTaskApi } from '../Services/AllApi';
+import { mediumlengthContext } from '../contexts/contextShare';
 
 const Medium = () => {
+  const [meduimLength,setMediumLength]=useContext(mediumlengthContext)
   const [mediumTask, setMediumTask] = useState([]);
   const [selectedTask, setSelectedTask] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -29,6 +31,7 @@ const Medium = () => {
       const result = await getMediumPrioriTaskApi(reqHeader);
       if (result.status === 200) {
         setMediumTask(result.data.reverse());
+        setMediumLength(result.data.length)
       }
     } catch (err) {
       console.error(err);

@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Header from '../Components/Header';
 import Footer from '../Components/Footer';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
 import { getLowPrioriTaskApi, deleteTaskApi, EditTaskApi } from '../Services/AllApi';
+import { lowlengthContext } from '../contexts/contextShare';
 
 const Low = () => {
+  const [lowLength,setlowLength]=useContext(lowlengthContext)
   const [lowTask, setLowTask] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editTask, setEditTask] = useState({
@@ -35,6 +37,7 @@ const Low = () => {
       const result = await getLowPrioriTaskApi(reqHeader);
       if (result.status === 200) {
         setLowTask(result.data.reverse());
+        setlowLength(result.data.length)
       }
     } catch (err) {
       console.error(err);
